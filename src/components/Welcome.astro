@@ -1,0 +1,51 @@
+---
+export const prerender = true;
+import { faker } from "@faker-js/faker";
+const firstName = faker.person.firstName();
+---
+
+<form class="flex flex-col justify-between h-screen">
+  <label
+    class="flex justify-center mt-32 text-5xl text-cyan-700 font-extrabold"
+    for="userInput">{firstName}</label
+  >
+  <img
+    class="m-auto bg-cyan-700 mt-52 rounded-t-full animate-bounce"
+    id="robohashImage"
+    src={`https://robohash.org/${firstName}`}
+    alt="Robohash Image"
+    width="400"
+  />
+  <div class="flex justify-center mb-4">
+    <input
+      class="min-w-60 text-center text-2xl"
+      id="userInput"
+      type="text"
+      name="userInput"
+      autofocus
+    />
+    <button
+      class="bg-cyan-700 min-w-20 text-5xl font-extrabold text-white h-16 hover:bg-cyan-500 duration-300"
+      >+</button
+    >
+  </div>
+</form>
+
+<script>
+  document.querySelector("form")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const value = (e.target as HTMLFormElement).userInput.value.trim();
+    const capitalizedValue = value
+      .split(" ")
+      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+    if (capitalizedValue) {
+      (document.querySelector("label") as HTMLElement).textContent =
+        capitalizedValue;
+      (document.querySelector("#robohashImage") as HTMLImageElement).src =
+        `https://robohash.org/${capitalizedValue}`;
+    } else {
+      alert("Trage einen Namen ein.");
+    }
+  });
+</script>
